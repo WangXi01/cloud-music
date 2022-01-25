@@ -9,6 +9,8 @@ import { connect } from 'react-redux';
 import * as actionTypes from '@/store/Recommend/actionCreators';
 // 懒加载
 import { forceCheck } from 'react-lazyload';
+// 子路由
+import { renderRoutes } from 'react-router-config';
 
 function Recommend(props) {
   const { bannerList, recommendList, enterLoading } = props;
@@ -36,6 +38,7 @@ function Recommend(props) {
         </div>
       </Scroll>
       {enterLoading ? <Loading></Loading> : null}
+      {renderRoutes(props.route.routes)}
     </Content>
   );
 }
