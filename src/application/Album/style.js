@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import style from '@/assets/global-style';
+import style from '../../assets/global-style';
 
 export const Container = styled.div`
   position: fixed;
@@ -8,7 +8,7 @@ export const Container = styled.div`
   right: 0;
   bottom: 0;
   z-index: 1000;
-  background: ${style['background-color']};
+  background: #fff;
   transform-origin: right bottom;
   &.fly-enter,
   &.fly-appear {
@@ -148,10 +148,7 @@ export const Menu = styled.div`
 export const SongList = styled.div`
   border-radius: 10px;
   opacity: 0.98;
-  ${(props) =>
-    props.showBackground
-      ? `background: ${style['highlight-background-color']}`
-      : ''}
+  background: ${style['highlight-background-color']};
   .first_line {
     box-sizing: border-box;
     padding: 10px 0;
@@ -182,7 +179,7 @@ export const SongList = styled.div`
       align-items: center;
       position: absolute;
       right: 0;
-      top: 0;
+      top: 0px;
       bottom: 0;
       width: 130px;
       line-height: 34px;
