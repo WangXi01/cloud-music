@@ -5,6 +5,7 @@ import Recommend from '@/application/Recommend';
 import Singers from '@/application/Singers';
 import Rank from '@/application/Rank';
 import Album from '@/application/Album';
+import PersonSingers from '@/application/personSinger';
 
 const router = [
   {
@@ -19,6 +20,7 @@ const router = [
       {
         path: '/recommend',
         component: Recommend,
+        key: 'recommend',
         routes: [
           {
             path: '/recommend/:id',
@@ -28,11 +30,25 @@ const router = [
       },
       {
         path: '/singers',
-        component: Singers
+        component: Singers,
+        key: 'singers',
+        routes: [
+          {
+            path: '/singers/:id',
+            component: PersonSingers
+          }
+        ]
       },
       {
-        path: '/rank',
-        component: Rank
+        path: '/rank/',
+        component: Rank,
+        key: 'rank',
+        routes: [
+          {
+            path: '/rank/:id',
+            component: Album
+          }
+        ]
       }
     ]
   }

@@ -2,6 +2,12 @@ import React, { useState, useEffect } from 'react';
 import Horizen from '@/baseUI/horizen-item';
 import { categoryTypes, alphaTypes } from '@/api/config';
 import { NavContainer, ListContainer, List, ListItem } from './style';
+import Loading from '@/baseUI/loading';
+import Scroll from '@/baseUI/Scroll/index';
+// 懒加载
+import LazyLoad, { forceCheck } from 'react-lazyload';
+// store
+import { connect } from 'react-redux';
 import {
   getSingerList,
   getHotSingerList,
@@ -12,10 +18,8 @@ import {
   changePullDownLoading,
   refreshMoreHotSingerList
 } from '@/store/Singers/actionCreators';
-import LazyLoad, { forceCheck } from 'react-lazyload';
-import Scroll from '@/baseUI/Scroll/index';
-import { connect } from 'react-redux';
-import Loading from '@/baseUI/loading';
+// 子路由
+import { renderRoutes } from 'react-router-config';
 
 function Singers(props) {
   let [category, setCategory] = useState('');
@@ -59,13 +63,20 @@ function Singers(props) {
     pullDownRefreshDispatch(category, alpha);
   };
 
+  const enterDetail = (id) => {
+    props.history.push(`/singers/${id}`);
+  };
+
   const renderSingerList = () => {
     const list = singerList ? singerList.toJS() : [];
     return (
       <List>
         {list.map((item, index) => {
           return (
-            <ListItem key={item.accountId + '' + index}>
+            <ListItem
+              key={item.accountId + '' + index}
+              onClick={() => enterDetail(item.id)}
+            >
               <div className="img_wrapper">
                 <LazyLoad
                   placeholder={
@@ -121,6 +132,7 @@ function Singers(props) {
         </Scroll>
         <Loading show={enterLoading}></Loading>
       </ListContainer>
+      {renderRoutes(props.route.routes)}
     </div>
   );
 }

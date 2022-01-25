@@ -48,7 +48,7 @@ export const TopDesc = styled.div`
     position: absolute;
     width: 100%;
     height: 100%;
-    filter: blur(20px);
+    filter: blur(10px);
     .filter {
       position: absolute;
       z-index: 10;

@@ -6,11 +6,10 @@ import Scroll from '@/baseUI/Scroll/index';
 import { getCount, getName, isEmptyObject } from '@/api/utils';
 import style from '@/assets/global-style';
 import Loading from '@/baseUI/loading/index';
+import { HEADER_HEIGHT } from '@/api/config';
 // store
 import { connect } from 'react-redux';
 import { getAlbumList, changeEnterLoading } from '@/store/Album/actionCreators';
-
-export const HEADER_HEIGHT = 45;
 
 function Album(props) {
   // 返回按钮

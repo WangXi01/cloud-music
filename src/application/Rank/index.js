@@ -26,13 +26,10 @@ function Rank(props) {
   let officialList = rankList.slice(0, globalStartIndex);
   let globalList = rankList.slice(globalStartIndex);
 
-  const enterDetail = (name) => {
-    const idx = filterIdx(name);
-    if (idx === null) {
-      alert('暂无相关数据');
-      return;
-    }
+  const enterDetail = (detail) => {
+    props.history.push(`/rank/${detail.id}`);
   };
+
   const renderSongList = (list) => {
     return list.length ? (
       <SongList>
@@ -52,9 +49,9 @@ function Rank(props) {
         {list.map((item) => {
           return (
             <ListItem
-              key={item.coverImgId}
+              key={item.id}
               tracks={item.tracks}
-              onClick={() => enterDetail(item.name)}
+              onClick={() => enterDetail(item)}
             >
               <div className="img_wrapper">
                 <img src={item.coverImgUrl} alt="" />
