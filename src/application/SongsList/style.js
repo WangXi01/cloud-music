@@ -7,7 +7,7 @@ export const SongList = styled.div`
   ${(props) =>
     props.showBackground
       ? `background: ${style['highlight-background-color']}`
-      : ''}
+      : ''};
   .first_line {
     box-sizing: border-box;
     padding: 10px 0;

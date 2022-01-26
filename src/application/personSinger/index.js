@@ -13,6 +13,8 @@ import {
   getSingerInfo,
   changeEnterLoading
 } from '@/store/PersonSinger/actionCreators';
+// 音符动画
+import MusicNote from '@/baseUI/music-note/index';
 
 function PersonSinger(props) {
   const [showStatus, setShowStatus] = useState(true);
@@ -82,6 +84,12 @@ function PersonSinger(props) {
     }
   }, []);
 
+  // 动画
+  const musicNoteRef = useRef();
+  const musicAnimation = (x, y) => {
+    musicNoteRef.current.startAnimation({ x, y });
+  };
+
   // store
   const { artist: immutableArtist, songs: immutableSongs, loading } = props;
 
@@ -121,10 +129,15 @@ function PersonSinger(props) {
         <BgLayer ref={layer}></BgLayer>
         <SongListWrapper ref={songScrollWrapper}>
           <Scroll onScroll={handleScroll} ref={songScroll}>
-            <SongsList songs={songs} showCollect={false}></SongsList>
+            <SongsList
+              songs={songs}
+              showCollect={false}
+              musicAnimation={musicAnimation}
+            ></SongsList>
           </Scroll>
         </SongListWrapper>
         {loading ? <Loading></Loading> : null}
+        <MusicNote ref={musicNoteRef}></MusicNote>
       </Container>
     </CSSTransition>
   );

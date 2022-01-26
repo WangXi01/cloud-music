@@ -10,14 +10,23 @@ import {
   CDWrapper,
   ProgressWrapper
 } from './style';
-import { prefixStyle } from '@/api/utils';
+import { prefixStyle, formatPlayTime } from '@/api/utils';
 import ProgressBar from '@/baseUI/progress-bar/index';
+import { playMode } from '@/api/config';
 // 帧动画
 import animations from 'create-keyframe-animation';
 
 function NormalPlayer(props) {
-  const { song, fullScreen } = props;
-  const { toggleFullScreen } = props;
+  const { song, fullScreen, playing, percent, duration, currentTime, mode } =
+    props;
+  const {
+    toggleFullScreen,
+    clickPlaying,
+    onProgressChange,
+    handlePrev,
+    handleNext,
+    changeMode
+  } = props;
 
   const normalPlayerRef = useRef();
   const cdWrapperRef = useRef();
@@ -67,14 +76,12 @@ function NormalPlayer(props) {
     });
     animations.runAnimation(cdWrapperRef.current, 'move');
   };
-
   const afterEnter = () => {
     // 进入后解绑帧动画
     const cdWrapperDom = cdWrapperRef.current;
     animations.unregisterAnimation('move');
     cdWrapperDom.style.animation = '';
   };
-
   const leave = () => {
     if (!cdWrapperRef.current) return;
     const cdWrapperDom = cdWrapperRef.current;
@@ -84,7 +91,6 @@ function NormalPlayer(props) {
       transform
     ] = `translate3d(${x}px, ${y}px, 0) scale(${scale})`;
   };
-
   const afterLeave = () => {
     if (!cdWrapperRef.current) return;
     const cdWrapperDom = cdWrapperRef.current;
@@ -93,6 +99,19 @@ function NormalPlayer(props) {
     // 一定要注意现在要把 normalPlayer 这个 DOM 给隐藏掉，因为 CSSTransition 的工作只是把动画执行一遍
     // 不置为 none 现在全屏播放器页面还是存在
     normalPlayerRef.current.style.display = 'none';
+  };
+
+  // 播放模式
+  const getPlayMode = () => {
+    let content;
+    if (mode === playMode.sequence) {
+      content = '&#xe625;';
+    } else if (mode === playMode.loop) {
+      content = '&#xe653;';
+    } else {
+      content = '&#xe61b;';
+    }
+    return content;
   };
 
   return (
@@ -127,7 +146,7 @@ function NormalPlayer(props) {
           <CDWrapper>
             <div className="cd">
               <img
-                className="image play"
+                className={`image play ${playing ? '' : 'pause'}`}
                 src={song.al.picUrl + '?param=400x400'}
                 alt=""
               />
@@ -136,23 +155,35 @@ function NormalPlayer(props) {
         </Middle>
         <Bottom className="bottom">
           <ProgressWrapper>
-            <span className="time time-l">0:00</span>
+            <span className="time time-l">{formatPlayTime(currentTime)}</span>
             <div className="progress-bar-wrapper">
-              <ProgressBar percent={0.2} percentChange={() => {}}></ProgressBar>
+              <ProgressBar
+                percent={percent}
+                percentChange={onProgressChange}
+              ></ProgressBar>
             </div>
-            <div className="time time-r">4:17</div>
+            <div className="time time-r">{formatPlayTime(duration)}</div>
           </ProgressWrapper>
           <Operators>
-            <div className="icon i-left">
-              <i className="iconfont">&#xe625;</i>
+            <div className="icon i-left" onClick={changeMode}>
+              <i
+                className="iconfont"
+                dangerouslySetInnerHTML={{ __html: getPlayMode() }}
+              ></i>
             </div>
-            <div className="icon i-left">
+            <div className="icon i-left" onClick={handlePrev}>
               <i className="iconfont">&#xe6e1;</i>
             </div>
             <div className="icon i-center">
-              <i className="iconfont">&#xe723;</i>
+              <i
+                className="iconfont"
+                onClick={(e) => clickPlaying(e, !playing)}
+                dangerouslySetInnerHTML={{
+                  __html: playing ? '&#xe723;' : '&#xe731;'
+                }}
+              ></i>
             </div>
-            <div className="icon i-right">
+            <div className="icon i-right" onClick={handleNext}>
               <i className="iconfont">&#xe718;</i>
             </div>
             <div className="icon i-right">
