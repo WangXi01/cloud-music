@@ -11,6 +11,7 @@ import {
 } from '@/store/Player/actionCreators';
 import MiniPlayer from './miniPlayer';
 import NormalPlayer from './normalPlayer';
+import PlayList from './play-list';
 import { getSongUrl, isEmptyObject, findIndex, shuffle } from '@/api/utils';
 import Toast from '@/baseUI/toast/index';
 import { playMode } from '@/api/config';
@@ -23,7 +24,8 @@ function Player(props) {
     currentSong: immutableCurrentSong,
     playList: immutablePlayList,
     mode, //播放模式
-    sequencePlayList: immutableSequencePlayList //顺序列表
+    sequencePlayList: immutableSequencePlayList, //顺序列表
+    showPlayList
   } = props;
   const {
     toggleFullScreenDispatch,
@@ -31,7 +33,8 @@ function Player(props) {
     changeCurrentIndexDispatch,
     changeCurrentDispatch,
     changePlayListDispatch,
-    changeModeDispatch
+    changeModeDispatch,
+    togglePlayListDispatch
   } = props;
 
   //目前播放时间
@@ -125,22 +128,6 @@ function Player(props) {
     toastRef.current.show();
   };
 
-  // 初始化播放状态
-  // useEffect(() => {
-  //   if (!currentSong) return;
-  //   changeCurrentIndexDispatch(0); //currentIndex默认为-1，临时改成0
-  //   let current = playList[0];
-  //   changeCurrentDispatch(current); //赋值currentSong
-  //   audioRef.current.src = getSongUrl(current.id);
-  //   setTimeout(() => {
-  //     audioRef.current.play();
-  //   });
-  //   togglePlayingDispatch(true); //播放状态
-  //   setCurrentTime(0); //从头开始播放
-  //   setDuration((current.dt / 1000) | 0); //时长
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
   // 播放与暂停
   useEffect(() => {
     playing ? audioRef.current.play() : audioRef.current.pause();
@@ -218,6 +205,7 @@ function Player(props) {
           currentTime={currentTime} //播放时间
           percent={percent} //进度
           toggleFullScreen={toggleFullScreenDispatch}
+          togglePlayList={togglePlayListDispatch}
           clickPlaying={clickPlaying}
         />
       )}
@@ -231,6 +219,7 @@ function Player(props) {
           percent={percent} //进度
           mode={mode}
           toggleFullScreen={toggleFullScreenDispatch}
+          togglePlayList={togglePlayListDispatch}
           onProgressChange={onProgressChange}
           clickPlaying={clickPlaying}
           handlePrev={handlePrev}
@@ -238,6 +227,7 @@ function Player(props) {
           changeMode={changeMode}
         />
       )}
+      <PlayList></PlayList>
       <audio
         ref={audioRef}
         onTimeUpdate={updateTime}
