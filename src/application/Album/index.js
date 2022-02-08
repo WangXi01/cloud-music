@@ -80,9 +80,7 @@ function Album(props) {
           <img src={currentAlbum.coverImgUrl} alt="" />
           <div className="play_count">
             <i className="iconfont play">&#xe885;</i>
-            <span className="count">
-              {getCount(currentAlbum.subscribedCount)}
-            </span>
+            <span className="count">{getCount(currentAlbum.playCount)}</span>
           </div>
         </div>
         <div className="desc_wrapper">
