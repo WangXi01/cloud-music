@@ -5,6 +5,7 @@ import { reducer as rankReducer } from './Rank/index';
 import { reducer as albumReducer } from './Album/index';
 import { reducer as singerInfoReducer } from './PersonSinger/index';
 import { reducer as playerReducer } from './Player/index';
+import { reducer as searchReducer } from './Search/index';
 
 export default combineReducers({
   recommend: recommendReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
   rank: rankReducer,
   album: albumReducer,
   singerInfo: singerInfoReducer,
-  player: playerReducer
+  player: playerReducer,
+  search: searchReducer
 });
